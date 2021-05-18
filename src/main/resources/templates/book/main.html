@@ -1,0 +1,202 @@
+<meta charset="UTF-8">
+
+<script type="text/javascript">
+	$(function(){
+		$("#book_user").datagrid({
+			idField: 'id',
+			title: '图书列表',
+			fitColumns: true,
+			width: '100%',
+			striped: true,
+			fit: true,
+			loadMsg: '数据正在加载中...',
+			rownumbers: true,
+			url: 'book/list',
+			singleSelect: true,
+			sortName: 'id',
+			sortOrder: 'asc',
+			columns: [
+				[
+					{
+						field: 'id',
+						title: 'id',
+						width: 100,
+						align: 'center',
+						sortable:true
+					},{
+						field: 'isbn',
+						title: 'ISBN',
+						width: 150,
+						align: 'center'
+					},{
+						field: 'name',
+						title: '书名',
+						width: 150,
+						align: 'center'
+					},{
+						field: 'press',
+						title: '出版社',
+						width: 150,
+						align: 'center'
+					},{
+						field: 'author',
+						title: '作者',
+						width: 150,
+						align: 'center'
+					},{
+						field: 'number',
+						title: '库存数量',
+						width: 150,
+						align: 'center'
+					},{
+						field: 'loanNumber',
+						title: '借出数量',
+						width: 150,
+						align: 'center'
+					},{
+						field: 'kind',
+						title: '种类',
+						width: 200,
+						align: 'center',
+						formatter: function(value){  
+							return value.type;
+						}
+					}
+				]
+			],
+			pagination: true,
+			pageSize: 10,
+			pageList: [5, 10, 15, 20, 25, 50],
+			dialog:{
+				create:{
+					title: '添加图书',
+					width: 430,
+					height: 480,
+					action: 'book/save',
+					href : 'book/edit'
+				},
+				update:{
+					title: '修改图书',
+					width: 430,
+					height: 430,
+					action: 'book/save',
+					href : 'book/edit'
+				},
+				delete:{
+					url: 'book/delete'
+				}
+			},
+			toolbar: [$.crudgrid.buttons.create,'-',$.crudgrid.buttons.update,'-',$.crudgrid.buttons.delete,'-',$.crudgrid.buttons.reload,'-', {
+				text: '借书',
+				iconCls: 'icon-save',
+				handler: function(){
+					var row = $("#book_user").datagrid('getSelected');
+					if(row == null){
+						$.messager.alert({
+							title: '提示' ,
+							msg: '请先选择图书！' ,
+							icon : 'info'
+						});
+						return ;
+					}
+					if(row.number <= 0){
+						$.messager.alert({
+							title: '提示' ,
+							msg: '此图书已被借出！' ,
+							icon : 'info'
+						});
+						return ;
+					}
+					$.messager.confirm('确认对话框', '您确定借阅'+row.name+'吗？', function(r){
+						if(r){
+							//发送到后台
+							$.post('book/borrow', {id: row.id}, function(result){
+								if(result.success){
+									$.messager.show({
+										title: '提示',
+										msg: '借书成功',
+										icon: 'info' 
+									});
+									//刷新表格
+									$("#book_user").datagrid('reload');
+								}else{
+									$.messager.alert({
+										title:'提示',
+										msg: '借书失败',
+										icon: 'error'
+									});
+								}
+							})
+						}
+					});
+				}
+			},{
+				text: '查看图书信息',
+				iconCls: 'icon-save',
+				handler: function(){
+					var row = $("#book_user").datagrid('getSelected');
+					if(row == null){
+						$.messager.alert({
+							title: '提示' ,
+							msg: '请先选择图书查看信息！' ,
+							icon : 'info'
+						});
+						return ;
+					}
+					Helper.ui.dialog({
+			            title: "图书信息",
+			            width: 600,
+			            contentHeight: 400,
+			            contentScroll: false,
+			            iframe: "book/message?id="+row.id
+			        });
+				}
+			}]
+		});
+		/* 
+		$("#book_user").datagrid({
+			onClickRow: function(index, row){
+				Helper.ui.dialog({
+		            title: "图书信息",
+		            width: 600,
+		            contentHeight: 400,
+		            contentScroll: false,
+		            iframe: "book/message?id="+row.id
+		        });
+			}
+		});
+		 */
+		//查询
+		$('#book_searchbtn').click(function(){
+			$('#book_user').datagrid('load', serializeForm($('#book_form').form()));
+		});
+		//清除查询
+		$('#book_clearbtn').click(function(){
+			$('#book_form').form('clear');
+			$("#book_user").datagrid('load', {});
+		});
+	});
+</script>
+	<div fit=true class="easyui-layout">
+		<div data-options="region:'north',split:false" style="height: 65px;">
+			<form class="layui-form" id = "book_form" method="post">
+				<div class="layui-input-inline">
+					<input type="text" name="name" placeholder="书名" class="layui-input">
+				</div>
+				<div class="layui-input-inline">
+					<input type="text" name="press" placeholder="出版社" class="layui-input">
+				</div>
+				<div class="layui-input-inline">
+					<input type="text" name="kind" placeholder="种类" class="layui-input">
+				</div>
+			 	<div class="layui-btn-group">
+				  	<button type="button" id = "book_searchbtn" class="layui-btn layui-btn-normal"><i class="layui-icon">&#xe615;</i>查询</button>
+				  	<button type="button" id = "book_clearbtn" class="layui-btn layui-btn-warm"><i class="layui-icon">&#xe640;</i>清空</button>
+				</div>
+			</form>
+		</div>
+		<div data-options="region:'center',split:false">
+			<table id = "book_user"></table>
+		</div>
+	</div>
+	

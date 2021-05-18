@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+	#message{
+		width: 500px;
+		margin: 30px; auto;
+	}
+	#img{
+		float: left;
+		width: 200px;
+		height: 300px;
+	}
+	#home{
+		float: left;
+		margin-left: 20px;
+		margin-left: 20px;
+		padding-top: 20px;
+	}
+	#home p{
+		font-size: 15px;
+		font-family: '楷体';
+		line-height: 20px;
+	}
+</style>
+</head>
+<body>
+	<div id="message">
+		<div id = "img"><img th:src="@{/download(id=${book.id})}" width="100%" height="100%" /></div>
+		<div id = "home">
+			<p><span>书名：</span><font th:text="${book.name}"></p>
+			<p><span>ISBN：</span><font th:text="${book.isbn}"></p>
+			<p><span>出版社：</span><font th:text="${book.press}"></p>
+			<p><span>作者：</span><font th:text="${book.author}"></p>
+			<p><span>图书种类：</span><font th:text="${book.kind.type}"></p>
+			<p><span>库存：</span><font th:text="${book.number}"></p>
+			<p><span>借出数量：</span><font th:text="${book.loanNumber}"></p>
+		</div>
+	</div>
+</body>
+</html>

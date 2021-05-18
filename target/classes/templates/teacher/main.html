@@ -1,0 +1,114 @@
+<meta charset="UTF-8">
+
+<script type="text/javascript">
+	$(function(){
+		$("#teacher_user").datagrid({
+			idField: 'id',
+			title: '老师列表',
+			fitColumns: true,
+			width: '100%',
+			fit: true,
+			striped: true,
+			loadMsg: '数据正在加载...',
+			rownumbers: true,
+			singleSelect: true, 
+			url: 'teacher/list',
+			sortName: 'id',
+			sortOrder: 'asc',
+			columns:[
+				[
+					{
+						field: 'id',
+						title: 'id',
+						width: 100,
+						align: 'center',
+						sortable:true
+					},{
+						field: 'username',
+						title: '用户名',
+						width: 150,
+						align: 'center'
+					},{
+						field: 'name',
+						title: '姓名',
+						width: 150,
+						align: 'center'
+					},{
+						field: 'remark',
+						title: '备注',
+						width: 150,
+						align: 'center'
+					},{
+						field: 'number',
+						title: '借书数量',
+						width: 150,
+						align: 'center'
+					}
+				]
+			],
+			pagination: true ,
+			pageSize: 10,
+			pageList: [5, 10, 15, 20, 25, 50],
+			dialog:{
+				create:{
+					title: '老师添加',
+					width: 430,
+					height: 280,
+					action: 'teacher/save',
+					href : 'teacher/edit'
+				},
+				update:{
+					title: '老师修改',
+					width: 430,
+					height: 280,
+					action: 'teacher/save',
+					href : 'teacher/edit'
+				},
+				delete:{
+					url: 'teacher/delete'
+				},
+				reset:{
+					url: 'teacher/reset'
+				}
+			},
+			toolbar: [$.crudgrid.buttons.create,'-',$.crudgrid.buttons.update,'-',$.crudgrid.buttons.delete,'-',$.crudgrid.buttons.reset,'-',$.crudgrid.buttons.reload,'-']
+		});
+		//查询
+		$('#teacher_searchbtn').click(function(){
+			$('#teacher_user').datagrid('load', serializeForm($('#teacher_form').form()));
+		});
+		//清除查询
+		$('#teacher_clearbtn').click(function(){
+			$('#teacher_form').form('clear');
+			$("#teacher_user").datagrid('load', {});
+		});
+	});
+</script>
+<div fit=true class="easyui-layout">
+	<div data-options="region:'north',split:false" style="height: 65px;">
+		<form class="layui-form" id="teacher_form" method="post">
+			<div class="layui-input-inline">
+				<input type="text" name="username" placeholder="请输入用户名"
+					class="layui-input">
+			</div>
+			<div class="layui-input-inline">
+				<input type="text" name="name" placeholder="请输入姓名"
+					class="layui-input">
+			</div>
+			<div class="layui-btn-group">
+				<button type="button" id="teacher_searchbtn"
+					class="layui-btn layui-btn-normal">
+					<i class="layui-icon">&#xe615;</i>查询
+				</button>
+				<button type="button" id="teacher_clearbtn"
+					class="layui-btn layui-btn-warm">
+					<i class="layui-icon">&#xe640;</i>清空
+				</button>
+			</div>
+		</form>
+	</div>
+	<div data-options="region:'center',split:false">
+		<table id="teacher_user"></table>
+	</div>
+</div>
+

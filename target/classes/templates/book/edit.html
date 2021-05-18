@@ -1,0 +1,35 @@
+<meta charset="UTF-8">
+
+<form class="custom-form" action="admin/save" method="post">
+	<input type="hidden" name = "id" data-th-value="${model.id}">
+	<input type="hidden" name = "loanNumber" data-th-value="${model.loanNumber}">
+	
+
+	<p th:if="${type == null}"><input type="text" class="easyui-filebox" accept:'image/gif,image/jpeg,image/jpg,image/png,image/svg' name="file" data-options="label:'图片：', 
+	prompt:'请上传图片', buttonText:'上传图片', labelAlign:'right', required:true"></p>
+	
+	<p><input type="text" class="easyui-textbox" data-th-value="${model.isbn}" name="isbn" data-options="label:'ISBN：', 
+	prompt:'请输入ISBN', labelAlign:'right', required:true"></p>
+	
+	<p>
+		<label style="margin-left: 10px;">选择种类：</label>
+		<select name="kind" limitToList="true" required=true class="easyui-combobox" style="margin-left: 3px; width: 220px;">
+			<option th:if="${type == null}" type="hidden"></option>
+			<option th:if="${type != null}" th:value='${model.kind.id}' th:text='${type}'></option>
+			<option th:each="c:${kind}" th:value="${c.id}" th:text="${c.type}"></option>
+		</select>
+	</p>
+	
+	<p><input type="text" class="easyui-textbox" data-th-value="${model.name}" name="name" data-options="label:'书名：', 
+	prompt:'请输入书名', labelAlign:'right', required:true"></p>
+	
+	<p><input type="text" class="easyui-textbox" data-th-value="${model.press}" name="press" data-options="label:'出版社：', 
+	prompt:'请输入出版社', labelAlign:'right', required:true"></p>
+	
+	<p><input type="text" class="easyui-textbox" data-th-value="${model.author}" name="author" data-options="label:'作者：', 
+	prompt:'请输入作者', labelAlign:'right', required:true"></p>
+	
+	<p><input type="text" class="easyui-textbox" data-th-value="${model.number}" name="number" data-options="label:'数量：', 
+	prompt:'请输入数量', labelAlign:'right', required:true"></p>
+	
+</form>

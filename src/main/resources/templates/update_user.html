@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>图书借阅平台—修改密码</title>
+<link rel="stylesheet" href="webjars/layui/2.3.0/css/layui.css">
+<link type="text/css" rel="stylesheet" href="static/css/user.css">
+<link rel="stylesheet" href="static/css/main.css">
+<script type="text/javascript" src="static/jquery-easyui-1.5.5.3/jquery.min.js"></script>
+<script type="text/javascript" src="webjars/layui/2.3.0/layui.js"></script>
+<script type="text/javascript" src="static/js/user.js"></script>
+</head>
+<body>
+	<ul class="layui-nav layui-bg-blue" style="padding-right: 50px;">
+	  	<li class="layui-nav-item" style="text-align: left;">
+			<a style="font-size: 26px; font-family: '楷体';"><i class="layui-icon" style="font-size: 26px;">&#xe656;</i>  图书借阅平台</a>
+		</li>
+	  	<li class="layui-nav-item layui-this" style="float: right;">
+	    	<a><img src="//t.cn/RCzsdCq" class="layui-nav-img"><span sec:authentication="principal.name"></span></a>
+	    	<dl class="layui-nav-child">
+	      		<dd><a href="">修改密码</a></dd>
+	      		<dd id = "out"><a>退出</a></dd>
+	    	</dl>
+	  	</li>
+	  	<li class="layui-nav-item" style="float: right;">
+	    	<a href="records/borrowRecord_user"><i class="layui-icon">&#xe705;</i>  借书记录</a>
+	  	</li>
+	  	<li class="layui-nav-item" style="float: right;">
+	    	<a href="records/returnBook_user"><i class="layui-icon">&#xe672;</i>  还书</a>
+	  	</li>
+	  	<li class="layui-nav-item" style="float: right;">
+	   	 	<a href="welCome"><i class="layui-icon">&#xe68e;</i>  首页</a>
+	  	</li>
+	</ul>
+	
+	<form id = "user_update" class="layui-form" method="post">
+		<div class="layui-form-item">
+			<label class="layui-form-label">请输入原密码：</label>
+			<div class="layui-input-inline">
+				<input type="password" name="pwd" lay-verify="required|pwd" placeholder="请输入密码" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">请输入新密码：</label>
+			<div class="layui-input-inline">
+				<input type="password" id="pwd1" name="pwd1" lay-verify="required|pwd1" placeholder="请输入密码" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">请确认新密码：</label>
+			<div class="layui-input-inline">
+				<input type="password" id="pwd2" name="pwd2" lay-verify="required|pwd2" placeholder="请输入密码" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item" style="margin-top: 20px;">
+		    <div class="layui-input-block">
+		      	<button class="layui-btn" id="update_btn" lay-submit lay-filter="formDemo">提交</button>
+		    </div>
+		</div>
+	</form>
+</body>
+</html>

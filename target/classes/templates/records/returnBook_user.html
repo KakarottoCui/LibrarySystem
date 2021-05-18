@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>图书借阅平台—还书</title>
+<link rel="stylesheet" href="../webjars/layui/2.3.0/css/layui.css">
+<link type="text/css" rel="stylesheet" href="../static/css/user.css">
+<link rel="stylesheet" href="../static/css/main.css">
+<script type="text/javascript" src="../static/jquery-easyui-1.5.5.3/jquery.min.js"></script>
+<script type="text/javascript" src="../webjars/layui/2.3.0/layui.js"></script>
+<script type="text/javascript">
+	layui.use('element', function() {
+		var element = layui.element;
+	});
+	layui.use('layer', function(){
+	  	var layer = layui.layer;
+	  	
+	  	$("#out").click(function(){
+	  		layer.confirm("确定退出", { 
+				btn:['确定', '取消']
+			},function(){
+				window.location.href="../logout1";
+			});
+	  	});
+	});
+	function returnBook(str){
+		layer.confirm("确定还书吗？", { 
+			btn:['确定', '取消']
+		},function(){
+			$.post("../book/huanshu", {id: str}, function(date){
+				layer.confirm("还书成功！", { 
+					btn:['确定']
+				},function(index){
+					parent.location.reload();
+				});
+			});
+		});
+	}
+</script>
+</head>
+<body>
+	<ul class="layui-nav layui-bg-blue" style="padding-right: 50px;">
+	  	<li class="layui-nav-item" style="text-align: left;">
+			<a style="font-size: 26px; font-family: '楷体';"><i class="layui-icon" style="font-size: 26px;">&#xe656;</i>  图书借阅平台</a>
+		</li>
+	  	<li class="layui-nav-item" style="float: right;">
+	    	<a><img src="//t.cn/RCzsdCq" class="layui-nav-img"><span sec:authentication="principal.name"></span></a>
+	    	<dl class="layui-nav-child">
+	      		<dd><a href="../update_user">修改密码</a></dd>
+	      		<dd id = "out"><a>退出</a></dd>
+	    	</dl>
+	  	</li>
+	  	<li class="layui-nav-item" style="float: right;">
+	    	<a href="../records/borrowRecord_user"><i class="layui-icon">&#xe705;</i>  借书记录</a>
+	  	</li>
+	  	<li class="layui-nav-item layui-this" style="float: right;">
+	    	<a href=""><i class="layui-icon">&#xe672;</i>  还书</a>
+	  	</li>
+	  	<li class="layui-nav-item" style="float: right;">
+	   	 	<a href="../welCome"><i class="layui-icon">&#xe68e;</i>  首页</a>
+	  	</li>
+	</ul>
+	
+	<div th:if="${records.size() != 0}" class = "records_home">
+		<div class="records_book" style="margin-top: 30px;" th:each="c:${records}">
+			<img th:src="@{/download(id=${c.book.id})}" width="25%" height="100%" />
+			<div class = "records_right">
+				<p><span>借书时间：</span><font th:text="${c.startTime}"></font></p><br>
+				<p><span>书名：</span><font th:text="${c.book.name}"></font></p><br>
+				<p onclick="returnBook(this.id)" th:id="${c.id}" class="returnBook">还书</p>
+			</div>
+		</div>
+	</div>
+	
+	<p th:if="${records.size() == 0}" style="font-family: '楷体'; text-align:center; font-size: 28px;margin-top: 100px;">你没有未还图书！快去借书吧！</p>
+	
+</body>
+</html>

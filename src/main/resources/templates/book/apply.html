@@ -1,0 +1,97 @@
+<meta charset="UTF-8">
+
+<script type="text/javascript">
+	$(function(){
+		$("#book_apply").datagrid({
+			idField: 'id',
+			title: '图书审核列表',
+			fitColumns: true,
+			width: '100%',
+			striped: true,
+			fit:true,
+			loadMsg: '数据正在加载中...',
+			rownumbers: true,
+			url: 'records/list',
+			queryParams: {methon1: '待审核'},
+			singleSelect: true,
+			sortName: 'id',
+			sortOrder: 'asc',
+			columns:[
+				[
+					{
+						field : 'book',
+						title : '图片',
+						align: 'center', 
+						width : 200,					
+						formatter:function(value){
+				     		return '<img  src="download?id=' + value.id +'" style="width:85px;height:120px;">';
+						}
+					},{
+						field: 'user',
+						title: '借书人姓名',
+						width: 150,
+						align: 'center',
+						formatter:function(value){
+				     		return value.name;
+						}
+					},{
+						field: 'id',
+						title: '书名',
+						width: 150,
+						align: 'center',
+						formatter:function(value,record,index){
+				     		return record.book.name;
+						}
+					},{
+						field: 'startTime',
+						title: '申请时间',
+						width: 150,
+						align: 'center'
+					}
+				]
+			],
+			pagination: true,
+			pageSize: 10,
+			pageList: [5, 10, 15, 20, 25, 50],
+			toolbar: [{
+				text: '同意申请',
+				iconCls: 'icon-ok',
+				handler: function(){
+					var row = $("#book_apply").datagrid('getSelected');
+					if(row == null){
+						$.messager.alert({
+							title: '提示' ,
+							msg: '请先选中一行同意申请！' ,
+							icon : 'info'
+						});
+						return ;
+					}
+					$.messager.confirm('确认对话框', '您确定同意吗？', function(r){
+						if(r){
+							//发送到后台
+							$.post('book/consent', {id: row.id}, function(result){
+								if(result.success){
+									$.messager.show({
+										title: '提示',
+										msg: '操作成功',
+										icon: 'info' 
+									});
+									//刷新表格
+									$("#book_apply").datagrid('reload');
+								}else{
+									$.messager.alert({
+										title:'提示',
+										msg: '操作失败',
+										icon: 'error'
+									});
+								}
+							})
+						}
+					});
+				}
+			},'-',$.crudgrid.buttons.reload, '-']
+		});
+	});
+</script>
+
+<table id = "book_apply"></table>

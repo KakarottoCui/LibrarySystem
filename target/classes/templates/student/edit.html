@@ -1,0 +1,43 @@
+<meta charset="UTF-8">
+
+<script type="text/javascript">
+	$(function(){
+		$('#student_fun').textbox({ 
+			onChange: function(str){
+				$.post('username', {username: str}, function(data){
+					if(data){
+						$("#student_resser").html("此账号已添加！");
+					}else{
+						$("#student_resser").html("");
+					}
+				});
+			}
+		});
+	});
+</script>
+
+<form class="custom-form" action="student/save" method="post">
+	<input type="hidden" name = "id" data-th-value="${model.id}">
+	<input type="hidden" name = "password" data-th-value="${model.password}">
+	<input type="hidden" name = "number" data-th-value="${model.number}">
+	<input type="hidden" name = "dept" data-th-value="${id}">
+	
+	<p><input type="text" id="student_fun" class="easyui-textbox" data-th-value="${model.username}" name="username" data-options="label:'账号：', 
+	prompt:'请输入账号', labelAlign:'right', required:true"></p>
+	<label class="resser" id = "student_resser"></label>
+	
+	<p style="margin-top: 8px;"><input type="text" class="easyui-textbox" data-th-value="${model.name}" name="name" data-options="label:'姓名：', 
+	prompt:'请输入姓名', labelAlign:'right', required:true"></p>
+	
+	<p>
+		<label style="margin-left: 40px;">性别：</label>
+		<select name="sex" limitToList="true" required=true class="easyui-combobox" style="margin-left: 3px; width: 220px;">
+			<option style="display: none;" th:text="${model.sex}"></option>
+			<option>男</option>
+			<option>女</option>
+		</select>
+	</p>
+	
+	<p><input type="text" class="easyui-textbox" name="phone" data-th-value="${model.phone}" data-options="label:'电话：', 
+	prompt:'请输入电话', labelAlign:'right', required:true"></p>
+</form>

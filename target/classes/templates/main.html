@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>图书借阅平台</title>
+<link rel="stylesheet" href="static/jquery-easyui-1.5.5.3/themes/material-teal/easyui.css" />
+<link rel="stylesheet" href="static/jquery-easyui-1.5.5.3/themes/icon.css" />
+<link rel="stylesheet" href="static/css/easyhelper.min.css" />
+<link rel="stylesheet" href="webjars/layui/2.3.0/css/layui.css">
+<link rel="stylesheet" href="static/css/main.css">
+<script src="static/js/jquery-3.3.1.min.js"></script>
+<script src="static/jquery-easyui-1.5.5.3/jquery.easyui.min.js"></script>
+<script src="static/jquery-easyui-1.5.5.3/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="webjars/layui/2.3.0/layui.js"></script>
+<script type="text/javascript" src = "static/js/jquery.transit.min.js"></script>
+<script type="text/javascript" src = "static/js/easyhelper.min.js"></script>
+<script type="text/javascript" src = "static/js/datagrid.js"></script>
+<script type="text/javascript" src = "static/js/main.js"></script>
+</head>
+<body>
+	<div id="cc" fit=true class="easyui-layout">
+		<div data-options="region:'north',split:false" id="north">
+			<h1><i class="layui-icon" style="font-size: 26px;">&#xe656;</i>  图书借阅平台</h1>
+			<div style="float: right; margin-right: 60px;">
+				欢迎您：
+				<span sec:authorize="hasRole('ROLE_DIY')"> 开发者 </span>
+				<span sec:authorize="!hasRole('ROLE_DIY')" sec:authentication="principal.name"></span>&emsp;&emsp;&emsp;
+				<span id = "out"><i class="layui-icon" style="font-size: 18px;">&#xe65c;</i>  注销</span>				
+			</div>
+		</div>   
+	    <div data-options="region:'west',split:false, iconCls: 'icon-more', title:'菜单'" id = "navigation">
+	    	<div fit=true class="easyui-accordion" sec:authorize="hasRole('ROLE_SYSTEM')">   
+			    <p src="admin/main">管理员管理</p>
+			    <p src="journal/main">操作日志</p>
+			    <p src="records/main">图书流动记录</p>
+			</div>
+			
+			<div fit=true class="easyui-accordion" sec:authorize="hasRole('ROLE_ADMIN')">   
+			    <div title="图书管理" iconCls='icon-large-clipart'>   
+			        <p src="kind/main">图书种类管理</p>
+			        <p src="book/main">图书管理</p>
+			    </div>
+			    <div title="借阅管理" iconCls='icon-large-chart'>   
+			    	<p src="records/main?methon=用户">用户借书记录</p>
+			    	<p src="book/apply">借书申请</p>
+			    </div>   
+			    <div title="用户管理" iconCls="icon-save">
+			    	
+			    	<ul class="easyui-tree" id="studnet_tree"></ul>
+			    	
+			    	<ul class="easyui-tree">
+			    		<li data-options="href:'teacher/main'">老师管理</li>
+			    		<li data-options="href:'journal/main?methon=用户'">操作日志</li>
+			    		<li data-options="href:'dept/main'">学院班级管理</li>
+			    	</ul>
+			    </div> 
+			    <div title="个人主页" iconCls="icon-man">   
+			    	<p src="records/returnBook">还书</p>
+			    	<p src="records/borrowRecord">借书记录</p>
+			    	<p src="update">修改密码</p>			    	
+			    </div>
+			</div>  
+	    </div>
+	    <div data-options="region:'center',split:false,">
+	    	<div id="tt" class="easyui-tabs" fit=true >
+	    		<div title="首页" iconCls="icon-tip" style="padding:20px;">   
+			        <p>图书管理系统分为三个角色：</p>
+			        <p style="text-indent: 2em;">系统管理员（默认账号：system，密码：111111），图书管理员(默认账号：admin，密码：111111)，用户，用户包括学生和老师</p><br>
+			        <p>系统管理员功能：</p>
+			        <p style="text-indent: 2em;">图书管理员的增删改查和重置密码，重置后密码为111111，查看操作日志，查看书籍流动（借阅）</p><br>
+			        <P>图书管理员功能：</P>
+			        <p style="text-indent: 2em;">用户，老师的增删改查和重置密码，重置后密码为111111，图书种类，图书增删改查，学院班级增删改查，操作日志，用户借书记录，借书还书，修改密码。</p><br>
+			        <p>用户功能：</p>
+			        <p style="text-indent: 2em;">借书还书，修改密码，查看借书记录</p>
+			    </div>
+	    	</div>
+	    </div>
+	</div>
+</body>
+</html>

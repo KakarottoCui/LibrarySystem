@@ -1,0 +1,96 @@
+<meta charset="UTF-8">
+
+<script type="text/javascript">
+	$(function(){
+		$("#journal_user").datagrid({
+			idField: 'id',
+			title: '日志列表',
+			fitColumns: true,
+			width: '100%',
+			striped: true,
+			fit: true,
+			loadMsg: '数据正在加载中...',
+			rownumbers: true,
+			url: 'journal/list',
+			queryParams: {methon: $('#journal_methon').val()},
+			singleSelect: true,
+			sortName: 'id',
+			sortOrder: 'desc',
+			pagination: true,
+			pageSize: 10,
+			pageList: [5, 10, 15, 20, 25, 50],
+			columns: [
+				[
+					{
+						field: 'id',
+						title: 'id',
+						width: 100,
+						align: 'center',
+						sortable:true
+					},{
+						field: 'username',
+						title: '操作者用户名',
+						width: 150,
+						align: 'center'
+					},{
+						field: 'time',
+						title: '操作时间',
+						width: 150,
+						align: 'center'
+					},{
+						field: 'operationName',
+						title: '操作名称',
+						width: 150,
+						align: 'center'
+					},{
+						field: 'reamark',
+						title: '备注',
+						width: 150,
+						align: 'center'
+					}
+				]
+			]
+		});
+		//查询
+		$('#journal_searchbtn').click(function(){
+			$('#journal_user').datagrid('load', serializeForm($('#journal_form').form()));
+		});
+		//清除查询
+		$('#journal_clearbtn').click(function(){
+			$('#journal_form').form('clear');
+			$("#journal_user").datagrid('load', {methon: $('#journal_methon').val()});
+		});
+	});
+</script>
+<div fit=true class="easyui-layout">
+	<div data-options="region:'north',split:false" style="height: 65px;">
+		<form class="layui-form" id="journal_form" method="post">
+			<div class="layui-input-inline">
+				<input type="text" name="username" placeholder="请输入用户名"
+					class="layui-input">
+			</div>
+			<div class="layui-input-inline">
+				<input type="text" name="operationName" placeholder="请输入操作名称"
+					class="layui-input">
+			</div>
+			<div class="layui-input-inline">
+				<input type="text" name="reamark" placeholder="请输入备注"
+					class="layui-input">
+			</div>
+			<div class="layui-btn-group">
+				<button type="button" id="journal_searchbtn"
+					class="layui-btn layui-btn-normal">
+					<i class="layui-icon">&#xe615;</i>查询
+				</button>
+				<button type="button" id="journal_clearbtn"
+					class="layui-btn layui-btn-warm">
+					<i class="layui-icon">&#xe640;</i>清空
+				</button>
+			</div>
+		</form>
+	</div>
+	<div data-options="region:'center',split:false">
+		<input id="journal_methon" type="hidden" th:value='${methon}'>
+		<table id="journal_user"></table>
+	</div>
+</div>

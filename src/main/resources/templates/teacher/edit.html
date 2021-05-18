@@ -1,0 +1,31 @@
+<meta charset="UTF-8">
+<script type="text/javascript">
+	$(function(){
+		$('#teacher_fun').textbox({ 
+			onChange: function(str){
+				$.post('username', {username: str}, function(data){
+					if(data){
+						$("#teacher_resser").html("此账号已添加！");
+					}else{
+						$("#teacher_resser").html("");
+					}
+				});
+			}
+		});
+	});
+</script>
+<form class="custom-form" action="teacher/save" method="post">
+	<input type="hidden" name = "id" data-th-value="${model.id}">
+	<input type="hidden" name = "password" data-th-value="${model.password}">
+	<input type="hidden" name = "number" data-th-value="${model.number}">
+
+	<p><input type="text" id="teacher_fun" class="easyui-textbox" data-th-value="${model.username}" name="username" data-options="label:'账号：', 
+	prompt:'请输入账号', labelAlign:'right', required:true"></p>
+	<label class="resser" id = "teacher_resser"></label>
+	
+	<p style="margin-top: 8px;"><input type="text" class="easyui-textbox" data-th-value="${model.name}" name="name" data-options="label:'姓名：', 
+	prompt:'请输入姓名', labelAlign:'right', required:true"></p>
+	
+	<p><input type="text" class="easyui-textbox" name="remark" data-th-value="${model.remark}" data-options="label:'备注：', 
+	prompt:'请输入备注', labelAlign:'right'"></p>
+</form>
